@@ -1,4 +1,3 @@
-package paging;
 import java.util.Random;
 
 public class Process {

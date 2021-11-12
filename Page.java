@@ -1,4 +1,4 @@
-package paging;
+
 
 public class Page {
     int size;

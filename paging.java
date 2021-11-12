@@ -1,4 +1,4 @@
-package paging;
+
 import java.util.*;
 
 public class paging {
