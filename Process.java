@@ -1,4 +1,3 @@
-
 public class Process implements Comparable<Process> {
     int bursttime;
     int arrivaltime;
@@ -65,11 +64,15 @@ public class Process implements Comparable<Process> {
         physicaladdress = address;
     }
 
+    public void setPriority(int p){
+        priority = p;
+    }
+
     public int compareTo(Process p) { //comparison class to sort processes by shortest remaining time
-        if(p.getremainingtime() > remainingtime){
+        if(p.getarrivaltime() > arrivaltime){
             return -1;
         }
-        else if(p.getremainingtime() < remainingtime){
+        else if(p.getarrivaltime() < arrivaltime){
             return 1;
         }
         else{

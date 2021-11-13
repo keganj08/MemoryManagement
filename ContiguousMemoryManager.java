@@ -1,14 +1,11 @@
 import java.util.*;
 
 
-public class ContiguousMemoryManager {
+public class ContiguousMemoryManager extends Memory{
     int runtime;
-    int timequantum;
     int contextswitchtime;
     int usedspace;
     int[] addresses;
-    ArrayList<Process> runningprocesses;
-    ArrayList<Process> readyqueue;
 
     ContiguousMemoryManager(int s){
         addresses = new int[s];
@@ -164,54 +161,51 @@ public class ContiguousMemoryManager {
     }
 
 
+    // private boolean done() {//To check if there are no more processes to finish
+    //     boolean b = true;
+    //     for(Process p : runningprocesses) {
+    //         if(p.getremainingtime() > 0) {
+    //             b = false;
+    //         }
+    //     }
+    //     return b;
+    // }
 
+    // public void runprocesses(){//runs processes in memory using round robin.
+    //     Collections.sort(readyqueue);//sorts the queue into fifo order
+    //     for(Process p : readyqueue){//loads processes into memory
+    //         runProcess(p);
+    //     }
 
-    private boolean done() {//To check if there are no more processes to finish
-        boolean b = true;
-        for(Process p : runningprocesses) {
-            if(p.getremainingtime() > 0) {
-                b = false;
-            }
-        }
-        return b;
-    }
-
-    public void runprocesses(){//runs processes by going through each process and decrementing its remaining time by the time quantum.
-
-        for(Process p : readyqueue){//loads processes into memory
-            runProcess(p);
-        }
-
-        while(!done()){
-            for (Process p : runningprocesses) {
-                if(p.getarrivaltime() <= runtime && p.getremainingtime() > 0){
-                    System.out.println("Now running process - " + p.getid());
-                    runtime += contextswitchtime;
-                    if(p.getremainingtime() <= timequantum){//if the time quantum is greater than the remaining time then we set the remaining time to zero and log the data
-                        runtime += p.getremainingtime();
-                        p.setremainingtime(0);
-                        p.setexittime(runtime);
-                        System.out.println("\tFinished process - " + p.getid() + " at t = " + runtime);
-                        System.out.println(("\tTT: " + (p.getexittime() - p.getarrivaltime())));
-                        System.out.println(("\tWT: " + ((p.getexittime() - p.getarrivaltime()) - p.getbursttime())));
-                        removeProcess(p);//removes process from memory
-                        for(Process r : readyqueue){//looks for processes that will fit into the now empty partition
-                            runProcess(r);
-                        }
-                    } else{
-                        p.run(timequantum); //if not we then run the process for the time quantum and add on the context switch time.
-                        runtime += timequantum;
-                        System.out.println("\tRan process - " + p.getid() + " for " + timequantum + "milliseconds");
-                    }
-                    System.out.println();
-                }
-            }
-        }
-    }
+    //     while(!done()){
+    //         for (Process p : runningprocesses) {
+    //             if(p.getarrivaltime() <= runtime){
+    //                 System.out.println("Now running process - " + p.getid());
+    //                 runtime += p.getremainingtime(); //Runs the process till it is finished executing
+    //                 p.setremainingtime(0);
+    //                 p.setexittime(runtime);
+    //                 System.out.println("\tFinished process - " + p.getid() + " at t = " + runtime);
+    //                 System.out.println(("\tTT: " + (p.getexittime() - p.getarrivaltime())));
+    //                 System.out.println(("\tWT: " + ((p.getexittime() - p.getarrivaltime()) - p.getbursttime())));
+    //                 removeProcess(p);//removes process from memory
+    //                 System.out.println("\tFreed Space: " + p.getSize());
+    //                 for(Process r : readyqueue){//looks for processes that will fit into the now empty partition
+    //                     runProcess(r);
+    //                 }
+    //                     System.out.println();
+    //             }
+    //             else{
+    //                 runtime++; //if no processes have yet arrived the "clock" runs for another time unit
+    //             }
+    //         }
+    //     }
+    // }
+    
 
 
     public static void main(String[] args) {
-       
+       ContiguousMemoryManager mmu = new ContiguousMemoryManager(100);
+       mmu.queueProcess(new Process());
 
 
     }
